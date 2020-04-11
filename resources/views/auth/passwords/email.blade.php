@@ -1,51 +1,61 @@
 @extends('layouts.app')
-
+@section('title', 'Resetar Senha')
 @section('content')
 
-<script src="{{ asset('js/app.js') }}" defer></script>
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<style type="text/css">
+    body {
+        background-color: #DADADA;
+    }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+    body>.grid {
+        height: 100%;
+    }
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    .ui.grid {
+        margin: 0rem;
+    }
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+    .column {
+        max-width: 450px;
+        min-width: 450px;
+    }
+</style>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+<body class="pt-5">
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <div class="content">
+                    {{ __('Reset Password') }}
                 </div>
+            </h2>
+
+            <form id="form" onsubmit="$('#submitResetButton').addClass('loading')" class="ui large form" method="POST" action="{{ route('password.email') }}">
+                @csrf
+                <div class="ui stacked segment">
+                    <div class="field @error('email') error @enderror" title="Endereço de E-Mail">
+                        <div class="ui left icon input ">
+                            <i class="user icon"></i>
+                            <input id="email" type="text" name="email" placeholder="Endereço de E-Mail" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        </div>
+                    </div>
+
+                    <button id="submitResetButton" type="submit" class="ui fluid large teal submit button">{{ __('Send Password Reset Link') }}</button>
+
+                </div>
+            </form>
+            @if (session('status'))
+            <div class="ui green message" role="alert">
+                <strong>{{ session('status') }}</strong>
             </div>
+            @endif
+
+            @error('email')
+            <div class="ui red message">
+                <strong>{{ $message }}</strong>
+            </div>
+            @enderror
         </div>
     </div>
-</div>
+</body>
 @endsection
