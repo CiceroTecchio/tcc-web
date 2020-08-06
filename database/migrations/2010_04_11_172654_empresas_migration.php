@@ -14,7 +14,7 @@ class EmpresasMigration extends Migration
     public function up()
     {
         Schema::create('empresas', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('nome');
             $table->string('razao_social');
             $table->string('cnpj')->unique();

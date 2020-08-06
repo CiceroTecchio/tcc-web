@@ -28,7 +28,8 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <div class="content">
+                <img src="img/onibus.gif" style="height: 100px; width: 100px" class="image"><br>
+                <div class="content mt-4">
                     Entre em sua conta
                 </div>
             </h2>

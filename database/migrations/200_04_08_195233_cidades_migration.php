@@ -14,7 +14,7 @@ class CidadesMigration extends Migration
     public function up()
     {
        Schema::create('cidades', function (Blueprint $table) {
-        $table->id();
+            $table->increments('id');
             $table->string('descricao_cidade');
             $table->integer('cod_estado')->unsigned();
             $table->foreign('cod_estado')->references('id')->on('estados');
