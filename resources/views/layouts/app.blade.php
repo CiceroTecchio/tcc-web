@@ -26,7 +26,7 @@
 
 <body>
     <div id="app">
-        <div class="ui fixed menu inverted teal big">
+        <div class="ui fixed menu big">
 
             @guest
             <a class="pl-4 item @if(Request::route()->getName() == 'home') active @endif" title="Início" href="{{ route('home') }}"><i class="home icon"></i>Início</a>

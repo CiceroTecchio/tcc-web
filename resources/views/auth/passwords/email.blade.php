@@ -4,7 +4,7 @@
 
 <style type="text/css">
     body {
-        background-color: #DADADA;
+        background-color: #00b5ad;
     }
 
     body>.grid {
@@ -17,19 +17,18 @@
 
     .column {
         max-width: 450px;
-        min-width: 450px;
     }
 </style>
 
 <body class="pt-5">
     <div class="ui middle aligned center aligned grid">
-        <div class="column">
-            <h2 class="ui teal image header">
-                <div class="content">
-                    {{ __('Reset Password') }}
-                </div>
-            </h2>
-
+    <div class="column">
+        <h2 class="ui teal image header">
+            <img src="{{ asset('/img/onibus.gif') }}" style="height: 100px; width: 100px; border: 2px solid white;" class="ui medium circular image"><br>
+            <div class="content mt-4" style="color: white;">
+                {{ __('Reset Password') }}
+            </div>
+        </h2>
             <form id="form" onsubmit="$('#submitResetButton').addClass('loading')" class="ui large form" method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="ui stacked segment">

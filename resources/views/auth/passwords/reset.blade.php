@@ -1,69 +1,84 @@
 @extends('layouts.app')
-
+@section('title', 'Modificar Senha')
 @section('content')
 
-<script src="{{ asset('js/app.js') }}" defer></script>
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<style type="text/css">
+    body {
+        background-color: #00b5ad;
+    }
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
+    body>.grid {
+        height: 100%;
+    }
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+    .ui.grid {
+        margin: 0rem;
+    }
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+    .column {
+        max-width: 450px;
+    }
+</style>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<body class="pt-5">
+    <div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            <img src="{{ asset('/img/onibus.gif') }}" style="height: 100px; width: 100px; border: 2px solid white;" class="ui medium circular image"><br>
+            <div class="content mt-4" style="color: white;">
+                {{ __('Reset Password') }}
             </div>
+        </h2>
+            <form id="form" onsubmit="$('#submitResetButton').addClass('loading')" class="ui large form" method="POST" action="{{ route('password.update') }}">
+                @csrf
+                
+                <input type="hidden" name="token" value="{{ $token }}">
+                <div class="ui stacked segment">
+                    <div class="field @error('email') error @enderror" title="Endereço de E-Mail">
+                        <div class="ui left icon input ">
+                            <i class="user icon"></i>
+                            <input id="email" type="text" name="email" placeholder="Endereço de E-Mail" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                        </div>
+                    </div>
+
+                    <div class="field @error('password') error @enderror" title="Senha">
+                        <div class="ui left icon input ">
+                            <i class="lock icon"></i>
+                            <input id="password" type="password" name="password" placeholder="Senha" required autocomplete="password" autofocus>
+                        </div>
+                    </div>
+
+                    <div class="field @error('password') error @enderror" title="Senha">
+                        <div class="ui left icon input ">
+                            <i class="lock icon"></i>
+                            <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="{{ __('Confirm Password') }}" autofocus>
+                        </div>
+                    </div>
+
+                    <button id="submitResetButton" type="submit" class="ui fluid large teal submit button">{{ __('Reset Password') }}</button>
+
+                </div>
+            </form>
+            @if (session('status'))
+            <div class="ui green message" role="alert">
+                <strong>{{ session('status') }}</strong>
+            </div>
+            @endif
+
+            @error('email')
+            <div class="ui red message">
+                <strong>{{ $message }}</strong>
+            </div>
+            @enderror
+
+            @error('password')
+            <div class="ui red message">
+                <strong>{{ $message }}</strong>
+            </div>
+            @enderror
         </div>
     </div>
-</div>
+</body>
+
 @endsection
