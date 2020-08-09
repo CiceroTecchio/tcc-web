@@ -4,7 +4,7 @@
 
 <style type="text/css">
     body {
-        background-color: #DADADA;
+        background-color: #00b5ad;
     }
 
     body>.grid {
@@ -28,8 +28,8 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <img src="img/onibus.gif" style="height: 100px; width: 100px" class="image"><br>
-                <div class="content mt-4">
+                <img src="{{ asset('/img/onibus.gif') }}" style="height: 100px; width: 100px; border: 2px solid white;" class="ui medium circular image"><br>
+                <div class="content mt-4" style="color: white;">
                     Entre em sua conta
                 </div>
             </h2>

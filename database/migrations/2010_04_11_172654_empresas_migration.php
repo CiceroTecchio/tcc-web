@@ -14,11 +14,11 @@ class EmpresasMigration extends Migration
     public function up()
     {
         Schema::create('empresas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('nome');
             $table->string('razao_social');
             $table->string('cnpj')->unique();
-            $table->integer('cod_cidade')->unsigned();
+            $table->bigInteger('cod_cidade')->unsigned();
             $table->foreign('cod_cidade')->references('id')->on('cidades');
             $table->string('endereco')->unique();
             $table->boolean('ativo')->default(true);
