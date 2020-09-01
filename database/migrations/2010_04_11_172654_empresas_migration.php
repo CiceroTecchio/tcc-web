@@ -21,7 +21,7 @@ class EmpresasMigration extends Migration
             $table->bigInteger('cod_cidade')->unsigned();
             $table->foreign('cod_cidade')->references('id')->on('cidades');
             $table->string('endereco')->unique();
-            $table->boolean('ativo')->default(true);
+            $table->boolean('fg_ativo')->default(true);
             $table->timestamps();
         });
     }

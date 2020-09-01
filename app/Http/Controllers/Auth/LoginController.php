@@ -69,7 +69,7 @@ class LoginController extends Controller
 
         //Se os dados estiverem corretos, reseta as quantidades de tentativa de login e retorna as informações
         //Gera um novo token e registra o acesso nos logs
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->senha, 'ativo' => 1])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->senha, 'fg_ativo' => 1])) {
             $token = Str::random(60);
             $user = User::find(Auth::id());
             $user->api_token = $token;
@@ -81,7 +81,7 @@ class LoginController extends Controller
             $log->save();
 
             $this->clearLoginAttempts($request);
-            return response()->json(['response' => 'Acesso autorizado', 'nome' => Auth::user()->name, 'api_token' => $token], 200);
+            return response()->json(['response' => 'Acesso autorizado', 'user' => Auth::user()->name, 'api_token' => $token], 200);
 
             //Se os dados forem incorretos, aumenta a quantidade de tentativas
         } else {

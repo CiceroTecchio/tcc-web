@@ -14,9 +14,9 @@ class LogMigration extends Migration
     public function up()
     {
        Schema::create('logs', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('IP');
-            $table->integer('cod_user')->unsigned();
+            $table->bigInteger('cod_user')->unsigned();
             $table->foreign('cod_user')->references('id')->on('users');
             $table->timestamps();
         });

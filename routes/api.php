@@ -20,5 +20,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/recuperar/senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
-
 Route::post('auth/login', 'Auth\LoginController@LoginAPI');
+
+Route::get('/teste',function () {
+    $users = DB::table('users')
+    ->select('id', "name")
+    ->get();
+
+    return $users;
+});
