@@ -15,6 +15,7 @@ class VeiculosMigration extends Migration
     {
         Schema::create('veiculos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('identificador');
             $table->string('placa');
             $table->bigInteger('cod_marca')->unsigned();
             $table->foreign('cod_marca')->references('id')->on('marcas_veiculo');

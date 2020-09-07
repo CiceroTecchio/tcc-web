@@ -17,10 +17,10 @@ class EmpresasMigration extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->string('razao_social');
-            $table->string('cnpj')->unique();
+            $table->string('cnpj');
             $table->bigInteger('cod_cidade')->unsigned();
             $table->foreign('cod_cidade')->references('id')->on('cidades');
-            $table->string('endereco')->unique();
+            $table->string('endereco');
             $table->boolean('fg_ativo')->default(true);
             $table->timestamps();
         });

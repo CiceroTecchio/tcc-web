@@ -9,3 +9,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::prefix('gerencial')->group(function () {
     Route::get('/home', 'HomeController@index')->name('homeGerencial');
 });
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('veiculos', 'VeiculoController');
+});

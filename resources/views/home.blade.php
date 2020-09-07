@@ -51,6 +51,7 @@
     var directionsRenderer;
     var directionsService;
     var map;
+    var rota;
 
     function limparRotas() {
         for (let i = 0; i < markers.length; i++) {
@@ -103,10 +104,11 @@
     function colocarDirectionlistener() {
         directionsRenderer.addListener('directions_changed', function() {
             var result = directionsRenderer.getDirections();
+            rota = result;
+            console.log(rota);
             ultimoWaypts.push(waypts);
             waypts = [];
             for (var x = 0; x < result.routes[0].legs[0].via_waypoint.length; x++) {
-                console.log(result.routes[0].legs[0].via_waypoint[x]);
                 waypts.push({
                     location: result.routes[0].legs[0].via_waypoint[x].location.lat() + ', ' + result.routes[0].legs[0].via_waypoint[x].location.lng(),
                     stopover: false,
@@ -173,7 +175,6 @@
             },
             (result, status) => {
                 if (status === "OK") {
-                    console.log(result);
                     directionsRenderer.setDirections(result);
                     directionsRenderer.setMap(map);
                     for (var x = 0; x < markers.length; x++) {

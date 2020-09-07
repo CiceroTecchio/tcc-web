@@ -54,7 +54,7 @@ class LoginController extends Controller
 
     protected function credentials(Request $request)
     {
-        return ['email' => $request->{$this->username()}, 'password' => $request->password, 'ativo' => 1, 'admin' => 1];
+        return ['email' => $request->{$this->username()}, 'password' => $request->password, 'fg_ativo' => 1, 'fg_admin' => 1];
     }
 
     //Realiza o login para o APP
