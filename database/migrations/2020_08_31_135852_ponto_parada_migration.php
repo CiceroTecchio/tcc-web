@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class PontoParadaMigration extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pontos_parada', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('cpf');
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
             $table->bigInteger('cod_empresa')->unsigned();
             $table->foreign('cod_empresa')->references('id')->on('empresas');
-            $table->boolean('fg_ativo')->default(true);
-            $table->string('api_token', 80)->nullable();
-            $table->boolean('fg_admin')->default(false);
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -37,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pontos_parada');
     }
 }

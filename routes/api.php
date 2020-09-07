@@ -18,7 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/recuperar/senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/veiculos', 'VeiculoController@index');
 
+    Route::get('/linhas', 'LinhaController@index');
+
+    Route::post('/registros', 'RoteiroRegistroController@store');
+
+    Route::delete('/registros/{id}', 'RoteiroRegistroController@destroy');
+
+});
+
+Route::post('/recuperar/senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
 Route::post('auth/login', 'Auth\LoginController@LoginAPI');
