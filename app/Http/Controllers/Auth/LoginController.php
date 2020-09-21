@@ -60,7 +60,6 @@ class LoginController extends Controller
     //Realiza o login para o APP
     function LoginAPI(Request $request)
     {
-
         //Verifica a quantidade de tentativas de acesso
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
