@@ -10,6 +10,21 @@ use App\Veiculo;
 
 class RoteiroRegistroController extends Controller
 {
+   
+    //verifica se existe um registro aberto para o usuário
+    public function registroAberto()
+    {
+        $roteiro = RoteiroRegistro::where('cod_user', Auth::id())
+            ->where('fg_ativo', true)
+            ->get()
+            ->first();
+
+        if ($roteiro != null) {
+            return response()->json(['response' => 'Linha em andamento', 'id' => $roteiro->id], 200);
+        } else {
+            return response()->json(['response' => 'Nenhuma linha em andamento']);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +53,6 @@ class RoteiroRegistroController extends Controller
      */
     public function store(Request $request)
     {
-
         //Valida se foi enviado o valor da linha e do veiculo
         if (!$request->has('cod_veiculo') || !$request->has('cod_linha')) {
             return response()->json(['response' => 'Parâmetros Inválidos'], 400);
@@ -117,19 +131,29 @@ class RoteiroRegistroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    //Desativa o registro de roteiro
     public function destroy($id)
     {
-        $registro = RoteiroRegistro::join('linhas', 'cod_linha', 'linhas.id')->select('cod_empresa','roteiros_registro.fg_ativo')->find($id);
+        $registro = RoteiroRegistro::select('roteiros_registro.cod_user', 'roteiros_registro.fg_ativo')->find($id);
+
+        //verifica se o registro não existe
         if ($registro == null) {
             return response()->json(['response' => 'Parâmetros Inválidos'], 400);
-        } else if ($registro->cod_empresa != auth()->user()->cod_empresa) {
+
+            //verifica se o registro pertence ao usuário
+        } else if ($registro->cod_user != auth()->user()->id) {
             return response()->json(['response' => 'Parâmetros Inválidos'], 400);
+
+            //verifica se o registro já está inativo
         } else if ($registro->fg_ativo == false) {
             return response()->json(['response' => 'Linha já inativa'], 409);
         }
+
+        //Inativa o registro
         try {
             RoteiroRegistro::where('id', $id)->update(['fg_ativo' => false]);
-                
+
             return response()->json(['response' => 'Linha Finalizada'], 200);
         } catch (\Exception $e) {
             return response()->json(['response' => 'Parâmetros Inválidos'], 400);

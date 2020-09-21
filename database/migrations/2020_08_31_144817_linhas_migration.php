@@ -28,6 +28,11 @@ class LinhasMigration extends Migration
             $table->boolean('fg_quinta')->default(false);
             $table->boolean('fg_sexta')->default(false);
             $table->boolean('fg_sabado')->default(false);
+            $table->longText('waypoints');
+            $table->longText('origin');
+            $table->longText('destination');
+            $table->boolean('fg_ativo')->default(false);
+
             $table->timestamps();
         });
     }

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('cpf');
             $table->bigInteger('cod_empresa')->unsigned();
             $table->foreign('cod_empresa')->references('id')->on('empresas');
-            $table->boolean('fg_ativo')->default(true);
+            $table->boolean('fg_ativo')->default(false);
             $table->string('api_token', 80)->nullable();
             $table->boolean('fg_admin')->default(false);
             $table->rememberToken();

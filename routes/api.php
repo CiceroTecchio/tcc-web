@@ -19,14 +19,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('/veiculos', 'VeiculoController@index');
+    Route::get('/veiculos', 'VeiculoController@indexAPI');
 
-    Route::get('/linhas', 'LinhaController@index');
+    Route::get('/linhas', 'LinhaController@indexAPI');
 
     Route::post('/registros', 'RoteiroRegistroController@store');
 
     Route::delete('/registros/{id}', 'RoteiroRegistroController@destroy');
 
+    Route::get('/registros', 'RoteiroRegistroController@registroAberto');
+
+    Route::post('/localizacao', 'LocalizacaoRoteiroController@store');
 });
 
 Route::post('/recuperar/senha', 'Auth\ForgotPasswordController@sendResetLinkEmail');

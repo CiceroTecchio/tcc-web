@@ -21,6 +21,7 @@ class VeiculosMigration extends Migration
             $table->foreign('cod_marca')->references('id')->on('marcas_veiculo');
             $table->bigInteger('cod_empresa')->unsigned();
             $table->foreign('cod_empresa')->references('id')->on('empresas');
+            $table->boolean('fg_ativo')->default(false);
             $table->timestamps();
         });
     }
