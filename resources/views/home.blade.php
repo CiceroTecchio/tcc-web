@@ -170,16 +170,16 @@
                 function() {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
-            navigator.geolocation.watchPosition(function(position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    userMarker.setPosition(new google.maps.LatLng(pos));
-                },
-                function() {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                });
+            // navigator.geolocation.watchPosition(function(position) {
+            //         var pos = {
+            //             lat: position.coords.latitude,
+            //             lng: position.coords.longitude
+            //         };
+            //         userMarker.setPosition(new google.maps.LatLng(pos));
+            //     },
+            //     function() {
+            //         handleLocationError(true, infoWindow, map.getCenter());
+            //     });
         } else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
