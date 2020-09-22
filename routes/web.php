@@ -1,5 +1,6 @@
 <?php
 
+use App\Linha;
 use App\Ponto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,15 @@ Route::get('/', function(){
     }else{
         $pontos = Ponto::select('id', 'latitude', 'longitude')->get();
         
-        return view('home', compact('pontos'));
+        $linhas = Linha::where('fg_ativo', true)->select('id', 'nome', 'waypoints','origin', 'destination')->get();
+
+        return view('home', compact('pontos', 'linhas'));
     }
 })->name('home');
+
+
+Route::get('/busca/linhas', 'LinhaController@indexUser');
+
+Route::get('/busca/rota/{id?}', 'LinhaController@rotaUser');
+
+Route::get('/busca/localizacao/{id?}', 'LocalizacaoRoteiroController@showUser');

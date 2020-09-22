@@ -9,11 +9,28 @@ use Illuminate\Support\Facades\DB;
 
 class LinhaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function indexUser()
+    {
+        $linhas = Linha::where('fg_ativo', true)->select('id', 'nome')->get();
+        return response()->json(['response' => 'Acesso autorizado', 'linhas' => $linhas], 200);
+    }
+
+    public function rotaUser($id = null)
+    {
+        if ($id == null) {
+            $linha = Linha::where('fg_ativo', true)->select('id', 'nome', 'origin', 'destination', 'waypoints')->get();
+
+            return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+        } else {
+            $linha[0] = Linha::where('fg_ativo', true)->select('id', 'nome', 'origin', 'destination', 'waypoints')->find($id);
+            if ($linha == null) {
+                return response()->json(['response' => 'Parâmetros Inválidos'], 400);
+            }
+            return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+        }
+    }
+    
     public function indexAPI()
     {
         $linhas = Linha::where('cod_empresa', Auth::user()->cod_empresa)->where('fg_ativo', true)->select('id', 'nome')->get();
