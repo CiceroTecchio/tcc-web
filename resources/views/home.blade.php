@@ -164,9 +164,6 @@
                         map: map,
                         title: 'Ponto de Parada - ' + (markersPontos.length + 1).toString()
                     });
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent('Location found.');
-                    infoWindow.open(map);
                     map.setCenter(pos);
                 },
                 function() {
