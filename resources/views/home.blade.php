@@ -147,10 +147,7 @@
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
+
 
             icon = {
                 url: "/img/marker-user.png",
@@ -158,6 +155,10 @@
             };
 
             navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
                     userMarker = new google.maps.Marker({
                         position: pos,
@@ -170,6 +171,10 @@
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
             navigator.geolocation.watchPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
                     userMarker.setPosition(new google.maps.LatLng(pos));
                 },
                 function() {
