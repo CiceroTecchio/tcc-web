@@ -149,7 +149,7 @@
         if (navigator.geolocation) {
 
 
-            icon = {
+            var userIcon = {
                 url: "/img/marker-user.png",
                 scaledSize: new google.maps.Size(40, 40),
             };
@@ -162,7 +162,7 @@
 
                     userMarker = new google.maps.Marker({
                         position: pos,
-                        icon: icon,
+                        icon: userIcon,
                         map: map,
                         title: 'Sua localização!'
                     });
@@ -170,16 +170,16 @@
                 function() {
                     handleLocationError(true, infoWindow, map.getCenter());
                 });
-            // navigator.geolocation.watchPosition(function(position) {
-            //         var pos = {
-            //             lat: position.coords.latitude,
-            //             lng: position.coords.longitude
-            //         };
-            //         userMarker.setPosition(new google.maps.LatLng(pos));
-            //     },
-            //     function() {
-            //         handleLocationError(true, infoWindow, map.getCenter());
-            //     });
+            navigator.geolocation.watchPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    userMarker.setPosition(new google.maps.LatLng(pos));
+                },
+                function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
         } else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
