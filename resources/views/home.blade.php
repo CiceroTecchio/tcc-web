@@ -147,7 +147,7 @@
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.watchPosition(function(position) {
                     var pos = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
@@ -162,7 +162,7 @@
                         position: pos,
                         icon: icon,
                         map: map,
-                        title: 'Ponto de Parada - ' + (markersPontos.length + 1).toString()
+                        title: 'Sua localização!'
                     });
                     map.setCenter(pos);
                 },
