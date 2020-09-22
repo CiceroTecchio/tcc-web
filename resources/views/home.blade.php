@@ -169,6 +169,8 @@
                 },
                 function() {
                     handleLocationError(true, infoWindow, map.getCenter());
+                }, {
+                    enableHighAccuracy: true
                 });
             navigator.geolocation.watchPosition(function(position) {
                     var pos = {
@@ -179,7 +181,10 @@
                 },
                 function() {
                     handleLocationError(true, infoWindow, map.getCenter());
-                });
+                }, {
+                    enableHighAccuracy: true
+                }
+            );
         } else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
