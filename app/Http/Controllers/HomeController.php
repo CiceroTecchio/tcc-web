@@ -17,9 +17,16 @@ class HomeController extends Controller
      */
     public function indexGerencial()
     {
-        $pontos = Ponto::where('cod_empresa', Auth::user()->cod_empresa)->select('id', 'latitude', 'longitude')->get();
+        $pontos = Ponto::where('cod_empresa', Auth::user()->cod_empresa)
+            ->select('id', 'latitude', 'longitude')
+            ->get();
 
-        $linhas = Linha::where('cod_empresa', Auth::user()->cod_empresa)->where('fg_ativo', true)->select('id', 'nome', 'waypoints','origin', 'destination')->get();
+        $linhas = Linha::where('cod_empresa', Auth::user()->cod_empresa)
+            ->join('roteiros_registro', 'cod_linha', 'linhas.id')
+            ->where('linhas.fg_ativo', true)
+            ->where('roteiros_registro.fg_ativo', true)
+            ->select('linhas.id', 'nome', 'waypoints', 'origin', 'destination','roteiros_registro.fg_ativo')
+            ->get();
 
         return view('homeGerencial', compact('pontos', 'linhas'));
     }

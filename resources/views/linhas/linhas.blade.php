@@ -216,7 +216,7 @@
                     customize: function(doc) {
                         doc.defaultStyle.alignment = 'left';
                         doc.styles.tableHeader.alignment = 'left';
-                        doc.content[1].table.widths = ['25%', '18%', '15%', '6%', '6%', '6%', '6%', '6%', '6%', '6%', ];
+                        doc.content[1].table.widths = ['5%','20%', '18%', '15%', '6%', '6%', '6%', '6%', '6%', '6%', '6%', ];
                     },
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

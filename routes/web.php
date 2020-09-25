@@ -44,7 +44,12 @@ Route::get('/', function(){
     }else{
         $pontos = Ponto::select('id', 'latitude', 'longitude')->get();
         
-        $linhas = Linha::where('fg_ativo', true)->select('id', 'nome', 'waypoints','origin', 'destination')->get();
+        $linhas = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')
+            ->where('linhas.fg_ativo', true)
+            ->where('roteiros_registro.fg_ativo', true)
+            ->select('linhas.id', 'nome', 'waypoints', 'origin', 'destination','roteiros_registro.fg_ativo')
+            ->groupBy('roteiros_registro.cod_linha')
+            ->get();
 
         return view('home', compact('pontos', 'linhas'));
     }
