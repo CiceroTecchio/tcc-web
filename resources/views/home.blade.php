@@ -194,7 +194,9 @@
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
-
+                    if(userMarker != null){
+                        userMarker.setMap(null);
+                    }
                     userMarker = new google.maps.Marker({
                         position: pos,
                         icon: userIcon,

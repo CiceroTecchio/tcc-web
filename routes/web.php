@@ -18,6 +18,8 @@ Route::group(['middleware' => 'auth','middleware' => 'check.active', 'prefix' =>
 
     Route::resource('/colaboradores', 'UserController');
 
+    Route::resource('/roteiro/registro', 'RoteiroRegistroController');
+
     Route::delete('/usuarios/usuarios/{id}/admin', 'UserController@destroyAdmin')->name('destroyAdmin');
 
     Route::get('/linhas/mapa/create', function(){
