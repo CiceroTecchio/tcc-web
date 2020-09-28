@@ -65,6 +65,24 @@
     </div>
 </div>
 
+<div id="style-selector-control" style="display: none;position:absolute;" class="ui compact segment form mt-2 p-0 pl-1 pr-1">
+    <label>Mostrar Comércios?</label>
+    <div class="inline fields p-0 m-0">
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input id="hide-poi" type="radio" name="frequency" checked="checked">
+                <label>Não</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input id="show-poi" type="radio" name="frequency">
+                <label>Sim</label>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div>
     <div id="googleMap"></div>
 </div>
@@ -76,11 +94,19 @@
     var markersPontos = [];
     var markersVeiculos = [];
     var directionsService = [];
-    var infoWindow = [];
     var directionsRenderer = [];
-    var polylineOptionsActual = [];
+    var infoWindow = [];
     var pontos = <?php echo $pontos ?>;
     var veiculos = [];
+    const styles = {
+        default: [],
+        hide: [{
+            featureType: "poi.business",
+            stylers: [{
+                visibility: "off"
+            }]
+        }]
+    };
 
     //redimensiona as divs
     redimensionarDivs();
@@ -100,8 +126,24 @@
             center: {
                 lat: -25.745,
                 lng: -53.060
-            }
+            },
+            styles: styles["hide"]
         });
+
+        // Add controls to the map, allowing users to hide/show features.
+        const styleControl = document.getElementById("style-selector-control");
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(styleControl);
+        document.getElementById("hide-poi").addEventListener("click", () => {
+            map.setOptions({
+                styles: styles["hide"]
+            });
+        });
+        document.getElementById("show-poi").addEventListener("click", () => {
+            map.setOptions({
+                styles: styles["default"]
+            });
+        });
+
         displayPontos();
         displayRoute();
     }
@@ -142,7 +184,17 @@
         directionsRenderer[id] = new google.maps.DirectionsRenderer({
             map,
             polylineOptions: {
-                strokeColor: colors[id]
+                strokeColor: colors[id],
+                strokeWeight: 2.5,
+                strokeOpacity: 1,
+                geodesic: true,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+                    },
+                    offset: '100%',
+                    repeat: '150px'
+                }]
             },
             suppressMarkers: true,
             preserveViewport: true
@@ -301,6 +353,7 @@
 
             }
         });
+        $('#style-selector-control').show();
 
     });
 </script>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Linha;
 use App\Ponto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,8 @@ Route::group(['middleware' => 'auth','middleware' => 'check.active', 'prefix' =>
     Route::resource('/veiculos', 'VeiculoController');
 
     Route::resource('/colaboradores', 'UserController');
+
+    Route::resource('/roteiro/registro', 'RoteiroRegistroController');
 
     Route::delete('/usuarios/usuarios/{id}/admin', 'UserController@destroyAdmin')->name('destroyAdmin');
 
@@ -43,6 +46,23 @@ Route::get('/', function(){
     }else{
         $pontos = Ponto::select('id', 'latitude', 'longitude')->get();
         
-        return view('home', compact('pontos'));
+        $linhas = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')
+            ->where('linhas.fg_ativo', true)
+            ->where('roteiros_registro.fg_ativo', true)
+            ->select('linhas.id', 'nome', 'waypoints', 'origin', 'destination','roteiros_registro.fg_ativo')
+            ->groupBy('roteiros_registro.cod_linha')
+            ->get();
+
+        return view('home', compact('pontos', 'linhas'));
     }
 })->name('home');
+
+Route::get('linhas', 'LinhaController@indexPublic')->name('linhasPublic');
+
+Route::get('/busca/linhas', 'LinhaController@indexUser');
+
+Route::get('/busca/rota/{id?}', 'LinhaController@rotaUser');
+
+Route::get('/busca/localizacao/{id?}', 'LocalizacaoRoteiroController@showUser');
+
+Route::get('/rotas/{id}', 'LinhaController@todasLinhas');

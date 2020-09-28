@@ -38,6 +38,10 @@
             top: 90px;
             padding-left: 45%;
         }
+
+        #style-selector-control {
+            margin-top: 40px !important;
+        }
     }
 </style>
 
@@ -47,6 +51,24 @@
         <h2 class="ui header">
             Falha ao salvar rota, tente novamente
         </h2>
+    </div>
+</div>
+
+<div id="style-selector-control" style="display: none;position:absolute;" class="ui compact segment form mt-2 p-0 pl-1 pr-1">
+    <label>Mostrar Comércios?</label>
+    <div class="inline fields p-0 m-0">
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input id="hide-poi" type="radio" name="frequency" checked="checked">
+                <label>Não</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui radio checkbox">
+                <input id="show-poi" type="radio" name="frequency">
+                <label>Sim</label>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -99,6 +121,20 @@
 
 
 <script>
+    var markers = [],
+        waypts = [];
+    var colors = ["green", "red", "blue", "purple", "yellow"];
+    var listener, directionsRenderer, directionsService, map;
+    const styles = {
+        default: [],
+        hide: [{
+            featureType: "poi.business",
+            stylers: [{
+                visibility: "off"
+            }]
+        }]
+    };
+
     //redimensiona as divs
     redimensionarDivs();
 
@@ -107,14 +143,44 @@
         redimensionarDivs();
     });
 
-    var markers = [],
-        waypts = [];
-    var colors = ["green", "red", "blue", "purple", "yellow"];
-    var listener, directionsRenderer, directionsService, map;
-
     function redimensionarDivs() {
         document.getElementById('googleMap').style.height = (window.innerHeight - 48) + 'px';
         document.getElementById('aviso').style.bottom = (window.innerHeight * 0.06) + 'px';
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("googleMap"), {
+            zoom: 15,
+            draggableCursor: 'crosshair',
+            center: {
+                lat: -25.745,
+                lng: -53.060
+            },
+            styles: styles["hide"]
+        });
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+            draggable: true,
+            map,
+        });
+
+        // Add controls to the map, allowing users to hide/show features.
+        const styleControl = document.getElementById("style-selector-control");
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(styleControl);
+        document.getElementById("hide-poi").addEventListener("click", () => {
+            map.setOptions({
+                styles: styles["hide"]
+            });
+        });
+        document.getElementById("show-poi").addEventListener("click", () => {
+            map.setOptions({
+                styles: styles["default"]
+            });
+        });
+
+
+        colocarDirectionlistener();
+        colocarListener();
     }
 
     function finalizarRota() {
@@ -161,25 +227,6 @@
         $("#buttonFinalizar").hide();
         $('#infoMessage').hide();
         $("#mapMarker").show();
-    }
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("googleMap"), {
-            zoom: 15,
-            draggableCursor: 'crosshair',
-            center: {
-                lat: -25.745,
-                lng: -53.060
-            }
-        });
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer({
-            draggable: true,
-            map,
-        });
-
-        colocarDirectionlistener();
-        colocarListener();
     }
 
     function colocarDirectionlistener() {
@@ -333,7 +380,7 @@
             displayRoute();
 
         } else {
-            
+
             $('#infoMessage').hide();
             if (markers.length - 1 == 0) {
                 markers[0].setMap(null);
@@ -392,6 +439,8 @@
             }
         });
     }
+
+    $('#style-selector-control').show();
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzCKnFntWPYLZPMiR6Ayf-grtw5SP_0Pc&callback=initMap&libraries=&v=weekly"></script>
 @endsection

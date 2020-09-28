@@ -9,11 +9,60 @@ use Illuminate\Support\Facades\DB;
 
 class LinhaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function todasLinhas($id)
+    {
+        $linha = Linha::where('linhas.fg_ativo', true)
+            ->select('linhas.id', 'nome', 'origin', 'destination', 'waypoints')
+            ->find($id);
+
+        return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+    }
+
+    public function indexPublic()
+    {
+        $linhas = Linha::where('linhas.fg_ativo', true)
+            ->join('empresas', 'cod_empresa', 'empresas.id')
+            ->select('linhas.id', 'linhas.nome', 'empresas.nome as empresa', 'frequencia', 'horario_inicio', 'horario_fim', 'fg_domingo', 'fg_segunda', 'fg_terca', 'fg_quarta', 'fg_quinta', 'fg_sexta', 'fg_sabado')
+            ->get();
+
+        return view('linhas', compact('linhas'));
+    }
+
+    public function indexUser()
+    {
+        $linhas = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')
+            ->where('linhas.fg_ativo', true)
+            ->where('roteiros_registro.fg_ativo', true)
+            ->select('linhas.id', 'nome')
+            ->get();
+        return response()->json(['response' => 'Acesso autorizado', 'linhas' => $linhas], 200);
+    }
+
+    public function rotaUser($id = null)
+    {
+        if ($id == null) {
+            $linha = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')
+                ->where('linhas.fg_ativo', true)
+                ->where('roteiros_registro.fg_ativo', true)
+                ->select('linhas.id', 'nome', 'origin', 'destination', 'waypoints')
+                ->get();
+
+            return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+        } else {
+            $linha[0] = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')
+                ->where('linhas.fg_ativo', true)
+                ->where('roteiros_registro.fg_ativo', true)
+                ->select('linhas.id', 'nome', 'origin', 'destination', 'waypoints')
+                ->find($id);
+
+            if ($linha == null) {
+                return response()->json(['response' => 'Parâmetros Inválidos'], 400);
+            }
+            return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+        }
+    }
+
     public function indexAPI()
     {
         $linhas = Linha::where('cod_empresa', Auth::user()->cod_empresa)->where('fg_ativo', true)->select('id', 'nome')->get();

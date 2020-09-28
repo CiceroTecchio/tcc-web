@@ -151,4 +151,47 @@ class LocalizacaoRoteiroController extends Controller
     {
         //
     }
+
+    public function showUser($id = null)
+    {
+        if ($id == null) {
+            $linha = Linha::leftJoin('roteiros_registro', function ($join) {
+                    $join->on('cod_linha', 'linhas.id')
+                        ->where('roteiros_registro.fg_ativo', true);
+                })
+                ->leftJoin('veiculos', 'cod_veiculo', 'veiculos.id')
+                ->leftJoin('localizacao_roteiro', function ($join) {
+                    $join->on('cod_roteiro_registro', 'roteiros_registro.id')
+                        ->on('localizacao_roteiro.id', '=', DB::raw("(SELECT max(id) from localizacao_roteiro)"));
+                })
+                ->where('linhas.fg_ativo', true)
+                ->groupBy('cod_roteiro_registro')
+                ->orderBy('localizacao_roteiro.id', 'desc')
+                ->select('localizacao_roteiro.latitude', 'localizacao_roteiro.longitude', 'linhas.nome as linha', 'localizacao_roteiro.updated_at','veiculos.identificador as veiculo')
+                ->get();
+
+            return response()->json(['response' => 'Acesso autorizado', 'localizacao' => $linha], 200);
+        } else {
+            $linha = Linha::leftJoin('roteiros_registro', function ($join) {
+                    $join->on('cod_linha', 'linhas.id')
+                        ->where('roteiros_registro.fg_ativo', true);
+                })
+                ->leftJoin('veiculos', 'cod_veiculo', 'veiculos.id')
+                ->leftJoin('localizacao_roteiro', function ($join) {
+                    $join->on('cod_roteiro_registro', 'roteiros_registro.id')
+                        ->on('localizacao_roteiro.id', '=', DB::raw("(SELECT max(id) from localizacao_roteiro)"));
+                })
+                ->where('linhas.fg_ativo', true)
+                ->where('linhas.id', $id)
+                ->groupBy('cod_roteiro_registro')
+                ->orderBy('localizacao_roteiro.id', 'desc')
+                ->select('localizacao_roteiro.latitude', 'localizacao_roteiro.longitude', 'linhas.nome as linha', 'localizacao_roteiro.updated_at', 'veiculos.identificador as veiculo')
+                ->get();
+
+            if ($linha == null) {
+                return response()->json(['response' => 'Parâmetros Inválidos'], 400);
+            }
+            return response()->json(['response' => 'Acesso autorizado', 'localizacao' => $linha], 200);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Usuários')
+@section('title', 'Roteiros')
 @section('content')
 
 <style>
@@ -43,67 +43,37 @@
 
 
 <div class="ui container segment mt-5">
-    <div class="ui mobile reversed stackable grid container pb-3">
-        <div class="four wide column">
-            <a class="ui green labeled icon button" href="{{ route('colaboradores.create') }}">
-                <i class="plus icon"></i>
-                Adicionar
-            </a>
-        </div>
-        <div class="eight wide column">
-            <h2 class="ui teal aligned center header">
-                <i style="font-size: 28px;" class="users icon"></i> Colaboradores
-            </h2>
-        </div>
-    </div>
 
+    <div class="column pb-3">
+        <h2 class="ui teal aligned center header">
+            <i style="font-size: 28px;" class="road icon"></i>Roteiros
+        </h2>
+    </div>
     <div class="table-responsive-lg">
         <table class="ui table unstackable celled" style="width: 100%;">
             <thead>
                 <tr>
-                    <th class="collapsing">ID</th>
-                    <th>Nome</th>
-                    <th>E-Mail</th>
-                    <th>CPF</th>
-                    <th class="collapsing center aligned">Admin</th>
-                    <th class="collapsing center aligned">Editar</th>
-                    <th class="collapsing center aligned">Ativo</th>
+                    <th>Linha</th>
+                    <th>Colaborador</th>
+                    <th>Veículo</th>
+                    <th>Início</th>
+                    <th>Fim</th>
                 </tr>
             </thead>
             <tbody class="scrolling content">
-                @foreach($usuarios as $usuario)
-                <tr>
-                    <td class="middle aligned">{{$usuario->id}}</td>
-                    <td class="middle aligned">{{$usuario->name}}</td>
-                    <td class="middle aligned">{{$usuario->email}}</td>
-                    <td class="middle aligned">{{$usuario->cpf}}</td>
-                    <form id="formAdmin{{$usuario->id}}" action="{{ route('destroyAdmin', $usuario->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <td class="selectable center aligned">
-                            <a class="linkIcon" href="#" onclick="document.getElementById('formAdmin{{$usuario->id}}').submit(); return false;">
-                                <i class="large inverted orange star @if($usuario->fg_admin == false) outline @endif icon"></i>
-                            </a>
-                        </td>
-                    </form>
-                    <td class="selectable center aligned">
-                        <a class="linkIcon" href="{{ route('colaboradores.edit', $usuario->id) }}">
-                            <i class="inverted blue edit icon"></i>
-                        </a>
-                    </td>
-                    <form id="formAtivar{{$usuario->id}}" action="{{ route('colaboradores.destroy', $usuario->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <td class="selectable center aligned">
-                            <a class="linkIcon" href="#" onclick="document.getElementById('formAtivar{{$usuario->id}}').submit(); return false;">
-                                <i class="large inverted @if($usuario->fg_ativo == true) green toggle on @else red toggle off @endif icon"></i>
-                            </a>
-                        </td>
-                    </form>
-                </tr>
-
+                @foreach($roteiros as $roteiro)
+                    <tr>
+                        <td>{{$roteiro->linha}}</td>
+                        <td>{{$roteiro->colaborador}}</td>
+                        <td>{{$roteiro->veiculo}}</td>
+                        <td>{{ \Carbon\Carbon::parse($roteiro->inicio)->format('d/m/Y H:i')}}</td>
+                        @if($roteiro->fg_ativo == true)
+                            <td>Em curso</td>
+                        @else
+                            <td>{{$roteiro->fim}}</td>
+                        @endif
+                    </tr>
                 @endforeach
-
             </tbody>
         </table>
     </div>
@@ -138,7 +108,7 @@
                     text: '<i class="inverted black copy icon"></i>',
                     titleAttr: 'Copiar Dados',
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4]
                     }
                 },
                 {
@@ -148,17 +118,13 @@
                     customize: function(doc) {
                         doc.defaultStyle.alignment = 'left';
                         doc.styles.tableHeader.alignment = 'left';
-                        doc.content[1].table.widths = ['10%', '35%', '20%', '35%'];
+                        doc.content[1].table.widths = ['25%', '25%', '25%', '12.5%', '12.5%'];
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4]
                     }
                 },
             ],
-            "columnDefs": [{
-                "targets": [4, 5, 6],
-                "orderable": false
-            }],
             "language": {
                 "sEmptyTable": "Nenhum registro encontrado",
                 "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",

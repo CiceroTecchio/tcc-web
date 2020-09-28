@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\RoteiroRegistro;
 use App\Veiculo;
+use DB;
+use Carbon\Carbon;
 
 class RoteiroRegistroController extends Controller
 {
-   
+
     //verifica se existe um registro aberto para o usuário
     public function registroAberto()
     {
@@ -32,7 +34,14 @@ class RoteiroRegistroController extends Controller
      */
     public function index()
     {
-        //
+        $roteiros = RoteiroRegistro::join('users', 'cod_user', 'users.id')
+            ->join('linhas', 'cod_linha', 'linhas.id')
+            ->join('veiculos', 'cod_veiculo', 'veiculos.id')
+            ->where('linhas.cod_empresa', auth()->user()->cod_empresa)
+            ->select('linhas.nome as linha', 'users.name as colaborador', DB::raw('CONCAT(identificador," - ", placa) as veiculo'), 'roteiros_registro.fg_ativo', 'roteiros_registro.created_at as inicio', 'roteiros_registro.updated_at as fim')
+            ->get();
+
+            return view('relatorios/roteiros', compact('roteiros'));
     }
 
     /**

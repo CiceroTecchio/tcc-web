@@ -71,12 +71,19 @@
                         <ul class="navbar-nav mr-auto">
                             @guest
                             <li class="nav-item">
-                                <a class="item @if(Request::route()->getName() == 'home') active @endif" title="Início" href="{{ route('home') }}"><i class="home icon"></i>Início</a>
+                                <a class="item @if(Request::route()->getName() == 'home') active @endif" title="Mapa" href="{{ route('home') }}"><i class="map icon"></i>Mapa</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="item @if(Request::route()->getName() == 'linhasPublic') active @endif" title="Linhas" href="{{ route('linhasPublic') }}"><i class="map signs icon"></i>Linhas</a>
                             </li>
 
                             @else
                             <li class="nav-item">
                                 <a class="item @if(Request::route()->getName() == 'homeGerencial') active @endif" href="{{ route('homeGerencial') }}"><i class="home icon"></i>Início</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="item @if(Request::route()->getName() == 'pontos.index') active @endif" href="{{ route('pontos.index') }}"><i class="map pin icon"></i>Pontos</a>
                             </li>
                             <div class="ui dropdown item menuDropdown">
                                 <i class="map signs icon"></i>Linhas
@@ -114,9 +121,15 @@
                                     </a>
                                 </div>
                             </div>
-                            <li class="nav-item">
-                                <a class="item @if(Request::route()->getName() == 'pontos.index') active @endif" href="{{ route('pontos.index') }}"><i class="map pin icon"></i>Pontos</a>
-                            </li>
+                            <div class="ui dropdown item menuDropdown">
+                                <i class="pdf file icon"></i> Relatórios
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <a class="item @if(Request::route()->getName() == 'registro.index') active @endif" href="{{ route('registro.index') }}">
+                                        <i class="road icon"></i> Roteiros
+                                    </a>
+                                </div>
+                            </div>
                             @endguest
 
                         </ul>
