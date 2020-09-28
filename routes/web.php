@@ -57,9 +57,12 @@ Route::get('/', function(){
     }
 })->name('home');
 
+Route::get('linhas', 'LinhaController@indexPublic')->name('linhasPublic');
 
 Route::get('/busca/linhas', 'LinhaController@indexUser');
 
 Route::get('/busca/rota/{id?}', 'LinhaController@rotaUser');
 
 Route::get('/busca/localizacao/{id?}', 'LocalizacaoRoteiroController@showUser');
+
+Route::get('/rotas/{id}', 'LinhaController@todasLinhas');

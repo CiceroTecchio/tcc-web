@@ -184,7 +184,17 @@
         directionsRenderer[id] = new google.maps.DirectionsRenderer({
             map,
             polylineOptions: {
-                strokeColor: colors[id]
+                strokeColor: colors[id],
+                strokeWeight: 2.5,
+                strokeOpacity: 1,
+                geodesic: true,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+                    },
+                    offset: '100%',
+                    repeat: '150px'
+                }]
             },
             suppressMarkers: true,
             preserveViewport: true

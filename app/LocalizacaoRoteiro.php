@@ -9,6 +9,6 @@ class LocalizacaoRoteiro extends Model
     protected $table = 'localizacao_roteiro';
 
     protected $fillable = [
-        'cod_roteiro_registro', 'latitude', 'longitude'
+        'cod_roteiro_registro', 'latitude', 'longitude', 'velocidade'
     ];
 }

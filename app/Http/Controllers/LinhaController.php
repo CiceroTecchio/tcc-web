@@ -10,6 +10,25 @@ use Illuminate\Support\Facades\DB;
 class LinhaController extends Controller
 {
 
+    public function todasLinhas($id)
+    {
+        $linha = Linha::where('linhas.fg_ativo', true)
+            ->select('linhas.id', 'nome', 'origin', 'destination', 'waypoints')
+            ->find($id);
+
+        return response()->json(['response' => 'Acesso autorizado', 'linha' => $linha], 200);
+    }
+
+    public function indexPublic()
+    {
+        $linhas = Linha::where('linhas.fg_ativo', true)
+            ->join('empresas', 'cod_empresa', 'empresas.id')
+            ->select('linhas.id', 'linhas.nome', 'empresas.nome as empresa', 'frequencia', 'horario_inicio', 'horario_fim', 'fg_domingo', 'fg_segunda', 'fg_terca', 'fg_quarta', 'fg_quinta', 'fg_sexta', 'fg_sabado')
+            ->get();
+
+        return view('linhas', compact('linhas'));
+    }
+
     public function indexUser()
     {
         $linhas = Linha::join('roteiros_registro', 'cod_linha', 'linhas.id')

@@ -70,7 +70,11 @@
                         <ul class="navbar-nav mr-auto">
                             @guest
                             <li class="nav-item">
-                                <a class="item @if(Request::route()->getName() == 'home') active @endif" title="Início" href="{{ route('home') }}"><i class="home icon"></i>Início</a>
+                                <a class="item @if(Request::route()->getName() == 'home') active @endif" title="Mapa" href="{{ route('home') }}"><i class="map icon"></i>Mapa</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="item @if(Request::route()->getName() == 'linhasPublic') active @endif" title="Linhas" href="{{ route('linhasPublic') }}"><i class="map signs icon"></i>Linhas</a>
                             </li>
 
                             @else

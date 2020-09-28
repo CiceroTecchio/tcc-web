@@ -103,7 +103,7 @@
 <div id="aviso" class="ui two column centered grid w-100">
     <div class="column w-auto ml-5">
         <div class="ui teal icon message">
-            <i class="bus icon"></i>
+            <i id="iconAviso" class="bus icon"></i>
             <div class="content">
                 <h4 id="mensagem" class="ui header">
 
@@ -112,7 +112,6 @@
         </div>
     </div>
 </div>
-
 <script>
     var directionsService = [];
     var directionsRenderer = [];
@@ -128,6 +127,7 @@
     var pontos = <?php echo $pontos ?>;
     var rota;
     var userMarker;
+    var listener;
     //Negócios não serão mostrados no mapa
     const styles = {
         default: [],
@@ -194,7 +194,7 @@
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
-                    if(userMarker != null){
+                    if (userMarker != null) {
                         userMarker.setMap(null);
                     }
                     userMarker = new google.maps.Marker({
@@ -205,55 +205,56 @@
                     });
                 },
                 function() {
-                    erroLocalizacaoUsuario(true, infoWindow, map.getCenter());
-                }, {
-                    enableHighAccuracy: true,
-                    maximumAge: 30000,
-                    timeout: 27000
-                });
-
-            // Função que atualiza a localização do usuário conforme ele se move
-            navigator.geolocation.watchPosition(function(position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    userMarker.setPosition(new google.maps.LatLng(pos));
-                },
-                function() {
-                    erroLocalizacaoUsuario(true, infoWindow, map.getCenter());
+                    selecionarLocalizacaoManual();
                 }, {
                     enableHighAccuracy: true,
                     maximumAge: 3000,
                     timeout: 2700
-                }
-            );
+                });
+
+            // Função que atualiza a localização do usuário conforme ele se move
+            navigator.geolocation.watchPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                userMarker.setPosition(new google.maps.LatLng(pos));
+            }, );
         } else {
             //Falha ao pegar localização do usuário
-            erroLocalizacaoUsuario(false, infoWindow, map.getCenter());
+            selecionarLocalizacaoManual();
         }
         displayRoute();
         displayPontos();
     }
 
     //Caso a localização do usuário não possa ser acessada
-    function erroLocalizacaoUsuario(browserHasGeolocation, infoWindow, pos) {
-        var userIcon = {
-            url: "/img/marker-user.png",
-            scaledSize: new google.maps.Size(40, 40),
-        };
+    function selecionarLocalizacaoManual() {
+        $('#iconAviso').removeClass('bus');
+        $('#iconAviso').addClass('map marker alternate');
+        $('#mensagem').text('Selecione sua localização no Mapa!');
+        $('#aviso').show();
+        listener = map.addListener('click', function(mapsMouseEvent) {
+            var userIcon = {
+                url: "/img/marker-user.png",
+                scaledSize: new google.maps.Size(40, 40),
+            };
 
-        userMarker = new google.maps.Marker({
-            position: pos,
-            icon: userIcon,
-            map: map,
-            title: 'Sua localização!'
+            userMarker = new google.maps.Marker({
+                position: mapsMouseEvent.latLng,
+                icon: userIcon,
+                map: map,
+                draggable: true,
+                title: 'Sua localização!'
+            });
+            google.maps.event.removeListener(listener);
+            if(markers.length == 1){
+                distancia(0);
+            }
+            google.maps.event.addListener(userMarker, 'dragend', function(evt) {
+                distancia(0);
+            });
         });
-        var pos = {
-            lat: -25.744782,
-            lng: -53.068239
-        };
-        userMarker.setPosition(new google.maps.LatLng(pos));
     }
 
     //Mostra os pontos de parada no mapa
@@ -301,6 +302,14 @@
                 strokeColor: colors[id],
                 strokeWeight: 2,
                 strokeOpacity: 1,
+                geodesic: true,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+                    },
+                    offset: '100%',
+                    repeat: '200px'
+                }]
             },
             suppressMarkers: true,
             preserveViewport: true
@@ -350,6 +359,8 @@
         if (resultado[id] == null) {
             return false;
         } else if (markersVeiculos[id] == null) {
+            return false;
+        } else if (userMarker == null) {
             return false;
         }
         var veiculo = [];
@@ -502,6 +513,8 @@
         } else {
             $('#mensagem').text('O ônibus está a menos de ' + duracaoDistancia + ' minutos de distancia!');
         }
+        $('#iconAviso').addClass('bus');
+        $('#iconAviso').removeClass('map marker alternate');
         $('#aviso').show();
     }
 
@@ -597,7 +610,7 @@
         $('.ui.dropdown')
             .dropdown({
                 message: {
-                    noResults: 'Nenhuma linha encontrada.'
+                    noResults: 'Nenhuma linha ativa.'
                 },
                 placeholder: "Todas as Linhas",
                 clearable: true,

@@ -65,6 +65,7 @@
                     <th>Nome</th>
                     <th>Horário</th>
                     <th>Frequência</th>
+                    <th style="display: none;">Dias</th>
                     <th class="collapsing">Dom</th>
                     <th class="collapsing">Seg</th>
                     <th class="collapsing">Ter</th>
@@ -82,9 +83,52 @@
                 <tr>
                     <td class="middle aligned">{{$linha->id}}</td>
                     <td class="middle aligned">{{$linha->nome}}</td>
-
                     <td class="middle aligned">{{date("H:i", strtotime($linha->horario_inicio))}} às {{date("H:i", strtotime($linha->horario_fim))}}</td>
                     <td class="middle aligned">{{$linha->frequencia}} minutos</td>
+                    
+                    <?php
+                    $datas = [];
+                    if ($linha->fg_segunda) {
+                        array_push($datas, "Segunda-Feira");
+                    }
+                    if ($linha->fg_terca) {
+                        array_push($datas, "Terça-Feira");
+                    }
+                    if ($linha->fg_quarta) {
+                        array_push($datas, "Quarta-Feira");
+                    }
+                    if ($linha->fg_quinta) {
+                        array_push($datas, "Quinta-Feira");
+                    }
+                    if ($linha->fg_sexta) {
+                        array_push($datas, "Sexta-Feira");
+                    }
+                    if ($linha->fg_sabado) {
+                        array_push($datas, "Sábado");
+                    }
+                    if ($linha->fg_domingo) {
+                        array_push($datas, "Domingo");
+                    }
+                    $data = '';
+                    if (count($datas) == 0) {
+                        $data = 'Nenhum dia Cadastrado';
+                    } else if (count($datas) == 1) {
+                        $data = $datas[0];
+                    } else {
+                        for ($x = 0; $x < count($datas); $x++) {
+                            if ($x == 0) {
+                                $data = $data . $datas[$x];
+                            } else if ($x == count($datas) - 1) {
+                                $data = $data . ' e ' . $datas[$x];
+                            } else {
+                                $data = $data . ', ' . $datas[$x];
+                            }
+                        }
+                    }
+
+                    ?>
+                    <td class="collapsing" style="display: none;">{{$data}}</td>
+                    
                     <td class="middle aligned center aligned">
                         @if($linha->fg_domingo == true)
                         <i class="inverted green circle icon"></i>
@@ -177,7 +221,6 @@
 </div>
 
 <script>
-
     $(document).ready(function() {
 
         var table = $('.ui.table').DataTable({
@@ -200,13 +243,14 @@
                     extend: 'colvis',
                     text: '<i class="inverted brown eye icon"></i> Colunas',
                     titleAttr: 'Visibilidade das Colunas',
+                    columns: [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
                 },
                 {
                     extend: 'copyHtml5',
                     text: '<i class="inverted black copy icon"></i>',
                     titleAttr: 'Copiar Dados',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        columns: [0, 1, 2, 3, 4]
                     }
                 },
                 {
@@ -216,15 +260,15 @@
                     customize: function(doc) {
                         doc.defaultStyle.alignment = 'left';
                         doc.styles.tableHeader.alignment = 'left';
-                        doc.content[1].table.widths = ['5%','20%', '18%', '15%', '6%', '6%', '6%', '6%', '6%', '6%', '6%', ];
+                        doc.content[1].table.widths = ['25%', '18%', '15%', '42%'];
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        columns: [1, 2, 3, 4]
                     }
                 },
             ],
             "columnDefs": [{
-                "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
                 "orderable": false
             }],
             "language": {
