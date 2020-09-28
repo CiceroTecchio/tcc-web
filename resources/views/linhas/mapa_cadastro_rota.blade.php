@@ -76,7 +76,7 @@
     <div id="googleMap"></div>
 </div>
 
-<form class="ui form" action="{{ route('create_linha') }}" method="post">
+<form id="form" class="ui form" action="{{ route('create_linha') }}" method="post">
     @csrf
     <input id="origin" name="origin" type="hidden">
     <input id="destination" name="destination" type="hidden">
@@ -184,9 +184,9 @@
     }
 
     function finalizarRota() {
-        var fields = $('.ui.form').form('get values', ['waypoints', 'origin', 'destination']);
+        var fields = $('#form').form('get values', ['waypoints', 'origin', 'destination']);
         if (fields['waypoints'].length > 0 && fields['origin'].length > 0 && fields['destination'].length > 0) {
-            $('.ui.form').submit();
+            $('#form').submit();
         } else {
             $('#msgAlerta').show();
             $('#msgAlerta')
