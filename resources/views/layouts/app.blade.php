@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ asset('js/semantic.min.js') }}" defer></script>
     <script src="{{ asset('js/jquery.mask.js') }}" defer></script>
+    <script data-ad-client="ca-pub-7359984401631359" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
     <!-- Scripts Datatables -->
     <script src="{{ asset('js/datatables/datatables.min.js') }}" defer></script>
@@ -25,10 +26,6 @@
     <script src="{{ asset('js/datatables/pdfmake-vfs_fonts.js') }}" defer></script>
     <script src="{{ asset('js/datatables/export.js') }}" defer></script>
     <script src="{{ asset('js/datatables/col-visibility.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">

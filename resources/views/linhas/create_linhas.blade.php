@@ -8,6 +8,9 @@
     }
 </style>
 <div class="ui raised padded container segment mt-5">
+    <div id="dimmer" class="ui dimmer">
+        <div class="ui text loader">Salvando</div>
+    </div>
 
     <div class="ui mobile reversed stackable grid container pb-3">
         <div class="four wide column">
@@ -104,8 +107,8 @@
         </div>
         <div class="ui centered grid">
 
-        <div class="row">
-                <button type="submit" class="ui labeled icon positive button">
+            <div class="row">
+                <button type="button" onclick="submitForm()" class="ui labeled icon positive button">
                     <i class="save icon"></i>
                     <b style="font-size: 18px;"> Salvar </b>
                 </button>
@@ -152,5 +155,13 @@
             }
         });
     });
+
+    function submitForm() {
+        $('#messages').hide();
+        if ($('.ui.form').form('validate form')) {
+            $('#dimmer').addClass('active');
+            $('.ui.form').submit();
+        }
+    }
 </script>
 @endsection
