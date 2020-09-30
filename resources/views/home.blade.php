@@ -248,9 +248,10 @@
                 title: 'Sua localização!'
             });
             google.maps.event.removeListener(listener);
-            if(markers.length == 1){
+            if (markers.length == 1) {
                 distancia(0);
             }
+            $('#aviso').hide();
             google.maps.event.addListener(userMarker, 'dragend', function(evt) {
                 distancia(0);
             });

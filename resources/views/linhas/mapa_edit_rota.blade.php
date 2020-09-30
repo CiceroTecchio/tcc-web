@@ -52,9 +52,9 @@
     </div>
 </div>
 
-<div id="style-selector-control" style="display: none;position:absolute;" class="ui compact segment form mt-2 p-0 pl-1 pr-1">
+<div id="style-selector-control" style="display: none;position:absolute;" class="ui compact segment form mt-5 p-0 pl-1 pr-1">
     <label>Mostrar Comércios?</label>
-    <div class="inline fields p-0 m-0">
+    <div class="inline fields m-0">
         <div class="field">
             <div class="ui radio checkbox">
                 <input id="hide-poi" type="radio" name="frequency" checked="checked">
