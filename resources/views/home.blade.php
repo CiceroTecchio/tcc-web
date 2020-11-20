@@ -28,6 +28,13 @@
         pointer-events: none;
     }
 
+    @media screen and (min-width: 768px) {
+        #aviso {
+            left: 25% !important;
+            width: 50% !important;
+        }
+    }
+
     @media screen and (max-width: 767px) {
         .raised.segment {
             width: 97% !important;
@@ -45,6 +52,11 @@
         #style-selector-control {
             display: none !important;
         }
+    }
+
+    #style-selector-control {
+        display: none;
+        position: absolute;
     }
 
     .pointer {
@@ -80,7 +92,7 @@
     </div>
 </div>
 
-<div id="style-selector-control" style="display: none;position:absolute;" class="ui compact segment form mt-2 p-0 pl-1 pr-1">
+<div id="style-selector-control" class="ui compact segment form mt-2 p-0 pl-1 pr-1">
     <label>Mostrar Comércios?</label>
     <div class="inline fields p-0 m-0">
         <div class="field">
