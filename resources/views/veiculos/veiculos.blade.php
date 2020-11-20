@@ -6,11 +6,17 @@
     body {
         background-color: #00b5ad;
     }
+    .pointer {
+        pointer-events: all;
+    }
+    .msgAlerta{
+        pointer-events: none;
+    }
 </style>
 
 @if (session('error'))
 <div class="ui two column centered grid mt-5 msgAlerta" style="position: absolute;z-index: 999; width:100%;">
-    <div class="ui negative message" style="width:50%;">
+    <div class="ui negative message pointer" style="width:50%;">
         <i class="close icon"></i>
         <h2 class="ui header">
             {{ session('error') }}
@@ -21,7 +27,7 @@
 
 @if (session('success'))
 <div class="ui two column centered grid mt-5 msgAlerta" style="position: absolute;z-index: 999; width:100%;">
-    <div class="ui success message" style="width:50%;">
+    <div class="ui success message pointer" style="width:50%;">
         <i class="close icon"></i>
         <h2 class="ui header">
             {{ session('success') }}
@@ -32,7 +38,7 @@
 
 @if (session('info'))
 <div class="ui two column centered grid mt-5 msgAlerta" style="position: absolute;z-index: 999; width:100%;">
-    <div class="ui info message" style="width:50%;">
+    <div class="ui info message pointer" style="width:50%;">
         <i class="close icon"></i>
         <h2 class="ui header">
             {{ session('info') }}

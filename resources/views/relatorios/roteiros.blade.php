@@ -70,7 +70,7 @@
                         @if($roteiro->fg_ativo == true)
                             <td>Em curso</td>
                         @else
-                            <td>{{$roteiro->fim}}</td>
+                            <td>{{ \Carbon\Carbon::parse($roteiro->fim)->format('d/m/Y H:i')}}</td>
                         @endif
                     </tr>
                 @endforeach

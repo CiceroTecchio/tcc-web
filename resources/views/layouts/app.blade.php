@@ -27,10 +27,6 @@
     <script src="{{ asset('js/datatables/export.js') }}" defer></script>
     <script src="{{ asset('js/datatables/col-visibility.js') }}" defer></script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Styles -->
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatables-semantic.min.css') }}" rel="stylesheet">

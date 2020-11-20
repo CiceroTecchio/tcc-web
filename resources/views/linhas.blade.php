@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Linhas')
 @section('content')
+
 <h6 class="ui center teal aligned icon header mt-3">
     <i class="map signs small icon"> Linhas</i>
 </h6>
